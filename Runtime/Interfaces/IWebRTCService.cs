@@ -10,6 +10,11 @@ namespace RealityToolkit.WebRTC
         /// Event for when we receive data
         /// </summary>
         Action<byte[]> OnDataReceived { get; }
+        
+        /// <summary>
+        /// Is the device connected to the internet?
+        /// </summary>
+        bool HasInternetConnection { get; }
 
         /// <summary>
         /// Create a connection with a remote peer

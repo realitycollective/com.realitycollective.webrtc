@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.MixedReality.WebRTC;
 using Microsoft.MixedReality.WebRTC.Unity;
@@ -17,6 +18,8 @@ namespace RealityToolkit.WebRTC
         /// <inheritdoc />
         public Action<byte[]> OnDataReceived { get; }
 
+        public bool HasInternetConnection => HasInternet();
+
         #region Private Properties
         private Dictionary<int, Connection> _connections;
         private MicrophoneSource _microphoneSource;
@@ -32,9 +35,12 @@ namespace RealityToolkit.WebRTC
         /// <inheritdoc />
         public override void Initialize()
         {
-            _connections = new Dictionary<int, Connection>();
-            _microphoneSource = GameObject.FindObjectOfType<MicrophoneSource>();
-            base.Initialize();
+            if (HasInternetConnection)
+            {
+                _connections = new Dictionary<int, Connection>();
+                _microphoneSource = GameObject.FindObjectOfType<MicrophoneSource>();
+                base.Initialize();
+            }
         }
         #endregion
         
@@ -132,6 +138,22 @@ namespace RealityToolkit.WebRTC
                     _connections[connection.Signaler.RemotePeerId] = connection;
                     channel.MessageReceived += OnDataReceived;
                 };
+            }
+        }
+
+        private bool HasInternet()
+        {
+            try
+            {
+                using (var client = new WebClient())
+                using (var stream = client.OpenRead("http://www.google.com"))
+                {
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
             }
         }
         #endregion
