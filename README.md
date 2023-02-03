@@ -1,7 +1,7 @@
 # Reality Toolkit - webrtc Platform Module
 
 The webrtc platform components for the [Reality Toolkit](https://github.com/realitycollective/com.realitytoolkit.core). This package enables your Reality Toolkit based project to run on webrtc devices.
-
+[Microsoft MixedReality WebRTC](https://github.com/microsoft/MixedReality-WebRTC) implementation data provider for the Reality Toolkit [WebRTC](https://github.com/realitycollective/com.realitycollective.webrtc) System.
 ## What's included?
 <!-- Fill in list of what is included here -->
 
@@ -10,14 +10,14 @@ tbc
 ## Supported Devices
 <!-- Fill in list of what devices or services are supported here -->
 
-- tbc
+- HoloLens 2
 
 ## Requirements
 <!-- Fill in list of requirements here -->
 
 - [RealityToolkit.Core](https://github.com/realitycollective/com.realitytoolkit.core)
 - [Unity 2020.3 and above](https://unity.com/)
-- tbc
+- [Microsoft MixedReality WebRTC](https://github.com/microsoft/MixedReality-WebRTC)
 
 ## Getting Started
 <!-- Update getting started docs here here -->
