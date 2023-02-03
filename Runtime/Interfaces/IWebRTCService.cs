@@ -9,7 +9,7 @@ namespace RealityToolkit.WebRTC
         /// <summary>
         /// Event for when we receive data
         /// </summary>
-        Action<string> OnDataReceived { get; }
+        Action<byte[]> OnDataReceived { get; }
 
         /// <summary>
         /// Create a connection with a remote peer

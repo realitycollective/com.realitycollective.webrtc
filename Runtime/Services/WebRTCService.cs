@@ -14,21 +14,33 @@ namespace RealityToolkit.WebRTC
 {
     public class WebRTCService : BaseServiceWithConstructor, IWebRTCService
     {
-        public Action<string> OnDataReceived { get; }
-        private Dictionary<int,Connection> _connections;
-        private MicrophoneSource _microphoneSource;
+        /// <inheritdoc />
+        public Action<byte[]> OnDataReceived { get; }
 
+        #region Private Properties
+        private Dictionary<int, Connection> _connections;
+        private MicrophoneSource _microphoneSource;
+        #endregion
+
+        #region IService Implementation
+        /// <inheritdoc />
         public WebRTCService(string name, uint priority, BaseProfile profile) : base(name, priority)
         {
         }
+
         
+        /// <inheritdoc />
         public override void Initialize()
         {
             _connections = new Dictionary<int, Connection>();
             _microphoneSource = GameObject.FindObjectOfType<MicrophoneSource>();
             base.Initialize();
         }
+        #endregion
+        
 
+        #region IWebRTCService Implementation
+        /// <inheritdoc />
         public async Task AddConnection(int localPeerId, int remotePeerId, bool startConnection)
         {
             if (!_connections.ContainsKey(remotePeerId))
@@ -61,26 +73,7 @@ namespace RealityToolkit.WebRTC
 
 
                 //When PeerConnection is ready we can start a connection sequence 
-                peerConnection.OnInitialized.AddListener(async () =>
-                {
-                    if (startConnection)
-                    {
-                        var dataChannel = await peerConnection.Peer.AddDataChannelAsync("DataPipeline", true, true);
-                        dataChannel.MessageReceived += bytes => Debug.Log(System.Text.Encoding.UTF8.GetString(bytes));
-                        connection.DataChannel = dataChannel;
-                        _connections[connection.Signaler.RemotePeerId] = connection;
-                        peerConnection.StartConnection();
-                    }
-                    else
-                    {
-                        peerConnection.Peer.DataChannelAdded += channel =>
-                        {
-                            connection.DataChannel = channel;
-                            _connections[connection.Signaler.RemotePeerId] = connection;
-                            channel.MessageReceived += bytes => Debug.Log(System.Text.Encoding.UTF8.GetString(bytes));
-                        };
-                    }
-                });
+                peerConnection.OnInitialized.AddListener(()=>InitializePeerConnection(peerConnection,connection,startConnection));
                 connectionGameObject.SetActive(true);
 #if !UNITY_EDITOR
                 connectionGameObject.GetComponent<AudioSource>().mute = true;
@@ -89,6 +82,7 @@ namespace RealityToolkit.WebRTC
             }
         }
 
+        /// <inheritdoc />
         public void RemoveConnection(int remotePeerId)
         {
             if (_connections.ContainsKey(remotePeerId))
@@ -98,22 +92,50 @@ namespace RealityToolkit.WebRTC
             }
         }
 
+        /// <inheritdoc />
         public void RemoveAllConnections()
         {
             foreach (var connection in _connections)
             {
                 GameObject.Destroy(connection.Value.Signaler.gameObject);
             }
+
             _connections.Clear();
         }
 
+        /// <inheritdoc />
         public void SendData(int remotePeerId, byte[] data)
         {
-            if (_connections.TryGetValue(remotePeerId,out var connection))
+            if (_connections.TryGetValue(remotePeerId, out var connection))
             {
                 connection.DataChannel.SendMessage(data);
             }
         }
+        #endregion IWebRTCService Implementation
+
+        #region Private Functions
+        private async void InitializePeerConnection(PeerConnection peerConnection, Connection connection,bool startConnection = true)
+        {
+            if (startConnection)
+            {
+                var dataChannel = await peerConnection.Peer.AddDataChannelAsync("DataPipeline", true, true);
+                dataChannel.MessageReceived += bytes => Debug.Log(System.Text.Encoding.UTF8.GetString(bytes));
+                connection.DataChannel = dataChannel;
+                _connections[connection.Signaler.RemotePeerId] = connection;
+                peerConnection.StartConnection();
+            }
+            else
+            {
+                peerConnection.Peer.DataChannelAdded += channel =>
+                {
+                    connection.DataChannel = channel;
+                    _connections[connection.Signaler.RemotePeerId] = connection;
+                    channel.MessageReceived += OnDataReceived;
+                };
+            }
+        }
+        #endregion
+        
     }
 }
 
