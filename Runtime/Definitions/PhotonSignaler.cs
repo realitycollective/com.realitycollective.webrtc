@@ -9,6 +9,8 @@ using UnityEngine;
 
 namespace RealityToolkit.webrtc.Definitions
 {
+#if PHOTON_INSTALLED
+
     public class PhotonSignaler : Signaler, IInRoomCallbacks
     {
         public int LocalPeerId;
@@ -40,6 +42,7 @@ namespace RealityToolkit.webrtc.Definitions
         
         private void HandlePlayerPropertyChange( string property, object input)
         {
+
             switch (input)
             {
                 case object[] value when property == SignalerMessages.RealTimeCommunication:
@@ -122,6 +125,7 @@ namespace RealityToolkit.webrtc.Definitions
 
         public void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
         {
+            
             if (changedProps.TryGetValue(SignalerMessages.RealTimeCommunication,out var value))
             {
                 HandlePlayerPropertyChange(SignalerMessages.RealTimeCommunication,value);
@@ -132,4 +136,21 @@ namespace RealityToolkit.webrtc.Definitions
         {
         }
     }
+    #else
+    public class PhotonSignaler : Signaler
+    {
+        public int LocalPeerId;
+        public int RemotePeerId;
+        
+        public override Task SendMessageAsync(SdpMessage message)
+        {
+            return Task.CompletedTask;
+        }
+
+        public override Task SendMessageAsync(IceCandidate candidate)
+        {
+            return Task.CompletedTask;
+        }
+    }
+#endif
 }
