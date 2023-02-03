@@ -37,7 +37,7 @@ namespace RealityToolkit.WebRTC
         /// <param name="remotePeerId">the id of the remote peer we want to send data to</param>
         /// <param name="data">Data we want to send across the a webrtc connection</param>
         /// <typeparam name="T">Type of data we want to send</typeparam>
-        void SendData<T>(int remotePeerId, T data);
+        void SendData(int remotePeerId,byte[] data);
     }
 }
 

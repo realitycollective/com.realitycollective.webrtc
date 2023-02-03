@@ -24,9 +24,6 @@
     "email": "realitycollectivedev@gmail.com",
     "url": "https://github.com/realitycollective"
   },
-  "dependencies": {
-    "com.microsoft.mixedreality.webrtc": "file:Plugins/com.microsoft.mixedreality.webrtc-2.0.2.tgz"
-  },
   "assets": [
     {
       "displayName": "Default Assets",

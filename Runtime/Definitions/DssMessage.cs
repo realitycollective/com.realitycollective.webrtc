@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-//using Microsoft.MixedReality.WebRTC;
-using UnityEngine;
+using Microsoft.MixedReality.WebRTC;
 
 [Serializable]
 public class DssMessage
@@ -57,7 +54,7 @@ public class DssMessage
         throw new ArgumentException($"Unkown signaler message type '{stringType}'", "stringType");
     }
 
-    /*public static Type MessageTypeFromSdpMessageType(SdpMessageType type)
+    public static Type MessageTypeFromSdpMessageType(SdpMessageType type)
     {
         switch (type)
         {
@@ -96,7 +93,7 @@ public class DssMessage
         MessageType = Type.Ice;
         Data = string.Join(IceSeparatorChar, candidate.Content, candidate.SdpMlineIndex.ToString(), candidate.SdpMid);
         IceDataSeparator = IceSeparatorChar;
-    }*/
+    }
 
     /// <summary>
     /// The message type.
