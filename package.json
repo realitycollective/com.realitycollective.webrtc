@@ -8,7 +8,7 @@
     "XR",
     "Mixed Reality"
   ],
-  "version": "1.0.0-preview.5",
+  "version": "0.0.1-preview.1",
   "unity": "2020.3",
   "homepage": "https://github.com/realitycollective",
   "bugs": {
@@ -23,9 +23,6 @@
     "name": "Reality Collective",
     "email": "realitycollectivedev@gmail.com",
     "url": "https://github.com/realitycollective"
-  },
-  "dependencies": {
-    "com.realitytoolkit.core": "1.0.0-preview.1"
   },
   "assets": [
     {

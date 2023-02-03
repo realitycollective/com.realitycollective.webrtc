@@ -2,7 +2,10 @@
     "name": "RealityToolkit.webrtc",
     "rootNamespace": "RealityToolkit.webrtc",
     "references": [
-        "GUID:13703f41b24bb904cb2305abe6317e3d"
+        "GUID:13703f41b24bb904cb2305abe6317e3d",
+        "GUID:73d456c551e58394a94a92ad9cd538db",
+        "GUID:57c32fc907df0f54e8e6e8f0d2488336",
+        "GUID:831409e8f9d13b5479a3baef9822ad34"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
